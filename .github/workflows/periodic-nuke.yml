@@ -23,13 +23,12 @@ jobs:
       - name: Git clone the repository
         uses: actions/checkout@v3
       - name: configure aws credentials
-        #uses: aws-actions/configure-aws-credentials@v4.1.0
-        uses: magnetikonline/action-aws-iam-assume-role@v1
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        #uses: magnetikonline/action-aws-iam-assume-role@v1
         with:
-          web-identity-role-arn: ${{ secrets.GHA_NUKE_ARN }}
-          #role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          #web-identity-role-arn: ${{ secrets.GHA_NUKE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
-      # Hello from AWS: WhoAmI
       - name: Sts GetCallerIdentity
         run: |
           aws sts get-caller-identity
