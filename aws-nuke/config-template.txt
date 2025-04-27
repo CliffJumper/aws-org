@@ -1,0 +1,77 @@
+# Regions on which to run aws-nuke
+regions:
+  - us-east-1
+  - us-east-2
+  - global
+
+# aws-nuke requires at least one account be configured in blocklist
+# such as your production accounts
+# if you don't want anything there, you can specify a dummy account ID
+blocklist: # aws-nuke <=2.14 need "account-blacklist"
+  - "${BLOCKED_ACCOUNT_ID}"
+
+# Account IDs on which you allow aws-nuke to run
+# You can add additional config per account here
+# Such as filters to prevent some resources deletion
+# See below for more examples
+accounts:
+  ${ACCOUNT_ID}:
+    presets:
+      - "common"
+      - "terraform"
+
+presets:
+  terraform:
+    filters:
+      S3Bucket:
+        - type: contains
+          value: "sandbox-account"
+      S3Object:
+        - type: contains
+          value: "terraform.tfstate"
+      DynamoDBTable:
+        - "terraform-lock"
+  common:
+    filters:
+      __global__:
+        - property: tag:aws-nuke-exempt
+          value: "true"
+      IAMRole:
+        - "OrganizationAccountAccessRole"
+        - "OrganizationReadOnlyRole"
+    
+resource-types:
+      excludes:
+        - CloudSearchDomain
+        - FMSPolicy
+        - FMSNotificationChannel
+        - IAMUser
+        - IAMUserAccessKey
+        - IAMGroup
+        - IAMPolicy
+        - IAMRole
+        - IAMRolePolicyAttachment
+        - IAMUserGroupAttachment
+        - IAMUserPolicyAttachment
+        - IAMUserSSHPublicKey
+        - IAMLoginProfile
+        - IAMAccountSettingPasswordPolicy
+        - IAMGroupPolicyAttachment
+        - IAMSAMLProvider
+        - ElasticTranscoderPipeline
+        - ElasticTranscoderPreset
+        - EC2KeyPair
+        - MachineLearningBranchPrediction
+        - MachineLearningDataSource
+        - MachineLearningEvaluation
+        - MachineLearningMLModel
+        - OpsWorksApp
+        - OpsWorksCMBackup
+        - OpsWorksCMServer
+        - OpsWorksCMServerState
+        - OpsWorksInstance
+        - OpsWorksLayer
+        - OpsWorksUserProfile
+        - RoboMakerRobotApplication
+        - RoboMakerSimulationApplication
+        - RoboMakerSimulationJob
