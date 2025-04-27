@@ -38,6 +38,9 @@ jobs:
         run: |
           chmod 0700 ./
           wget https://github.com/ekristen/aws-nuke/releases/download/v3.51.1/aws-nuke-v3.51.1-linux-amd64.tar.gz
+          if [ -f ./aws-nuke ] then;
+            rm -f ./aws-nuke
+          fi
           tar zxvf aws-nuke-v3.51.1-linux-amd64.tar.gz
       - name: Dry-Run aws-nuke
         env:
