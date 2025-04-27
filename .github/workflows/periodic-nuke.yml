@@ -37,7 +37,7 @@ jobs:
       - name: Setup aws-nuke
         run: |
           wget https://github.com/ekristen/aws-nuke/releases/download/v3.51.1/aws-nuke-v3.51.1-linux-amd64.tar.gz
-          tar -xvf ./aws-nuke-v3.51.1-linux-amd64.tar.gz
+          tar -zxvf ./aws-nuke-v3.51.1-linux-amd64.tar.gz
           chmod u+x aws-nuke
       - name: Dry-Run aws-nuke
         env:
