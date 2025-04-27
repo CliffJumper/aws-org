@@ -14,10 +14,9 @@ permissions:
   contents: read # This is required for actions/checkout
 jobs:
   CleanBobson:
-    uses: CliffJumper/aws-nuke/.github/workflows/nuke-workflow.yml@main
+    uses: ./.github/workflows/nuke-workflow.yml
     with:
       working-dir: "./aws-nuke"
-      region: ${{ env.AWS_REGION }}
     secrets:
       OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
       ACCOUNT_ID: ${{ secrets.BOBSON_ACCOUNT_ID }}
