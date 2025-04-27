@@ -1,0 +1,66 @@
+name: Reusable workflow to run aws-nuke
+
+on:
+  workflow_call:
+    inputs:
+      working-dir:
+        required: false
+        type: string
+        default: "./"
+      region:
+        required: false
+        type: string
+        default: "us-east-1"
+    secrets:
+      OPS_ROLE_ARN:
+        required: true
+      ACCOUNT_ID:
+        required: true
+      BLOCKED_ACCOUNT_ID:
+        required: true
+      ACCOUNT_ROLE_ARN:
+        required: true
+
+jobs:
+  NukeAccount:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          role-to-assume: ${{ secrets.OPS_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ inputs.region }}
+      - name: Generate config
+        working-directory: ${{ inputs.working-dir }}
+        env:
+          ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
+          BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKED_ACCOUNT_ID }}
+        run: |
+          cat ./config-template.txt | envsubst > nuke-config.yml
+
+      - name: Setup aws-nuke
+        working-directory: ${{ inputs.working-dir }}
+        run: |
+          chmod 0700 ./
+          wget https://github.com/ekristen/aws-nuke/releases/download/v3.51.1/aws-nuke-v3.51.1-linux-amd64.tar.gz
+          if [ -f ./temp ]; then echo "cleaning temp dir" && rm -f ./temp ; fi
+          mkdir temp
+          cd ./temp && tar zxvf ../aws-nuke-v3.51.1-linux-amd64.tar.gz
+          cd ../
+
+      - name: Run aws-nuke
+        working-directory: ${{ inputs.working-dir }}
+        env:
+          ASSUME_ARN: ${{ secrets.ACCOUNT_ROLE_ARN }}
+        run: |
+          OUT=$(aws sts assume-role --role-arn ${ASSUME_ARN} --role-session-name gha-assumed)
+          export AWS_ACCESS_KEY_ID=$(echo $OUT | jq -r '.Credentials''.AccessKeyId')
+          export AWS_SECRET_ACCESS_KEY=$(echo $OUT | jq -r '.Credentials''.SecretAccessKey')
+          export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
+          #aws sts get-caller-identity
+          #./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt
+          ./temp/aws-nuke explain-account -c nuke-config.yml

@@ -5,9 +5,7 @@ regions:
   - global
 
 # aws-nuke requires at least one account be configured in blocklist
-# such as your production accounts
-# if you don't want anything there, you can specify a dummy account ID
-blocklist: # aws-nuke <=2.14 need "account-blacklist"
+blocklist:
   - "${BLOCKED_ACCOUNT_ID}"
 
 # Account IDs on which you allow aws-nuke to run
