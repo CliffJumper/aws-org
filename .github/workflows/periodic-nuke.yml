@@ -3,8 +3,6 @@ name: Periodically run aws-nuke on select AWS accounts in the ORG.
 
 # Controls when the action will run. Invokes the workflow on push events but only for the main branch
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: "30 23 * * 6" # Runs at 11:30 PM on Saturday nights
@@ -55,4 +53,4 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=$(echo $OUT | jq -r '.Credentials''.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
           #aws sts get-caller-identity
-          ./temp/aws-nuke explain-account -c nuke-config.yml
+          ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt
