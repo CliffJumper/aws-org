@@ -29,19 +29,25 @@ jobs:
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
       - name: Generate config
+        working-directory: ./aws-nuke
         env:
           ACCOUNT_ID: ${{ secrets.BOBSON_ACCOUNT_ID }}
           BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
         run: |
-          cat ./aws-nuke/config-template.txt | envsubst | tee nuke-config.yml
+          cat ./config-template.txt | envsubst | tee nuke-config.yml
       - name: Setup aws-nuke
+        working-directory: ./aws-nuke
         run: |
+          ls -laF .
           chmod 0700 ./
-          #wget https://github.com/ekristen/aws-nuke/releases/download/v3.51.1/aws-nuke-v3.51.1-linux-amd64.tar.gz
-          #if [ -f ./aws-nuke ]; then rm -f ./aws-nuke ; fi
-          #tar zxvf aws-nuke-v3.51.1-linux-amd64.tar.gz
-          sudo apt-get -y install aws-nuke
+          wget https://github.com/ekristen/aws-nuke/releases/download/v3.51.1/aws-nuke-v3.51.1-linux-amd64.tar.gz
+          if [ -f ./temp ]; then echo "cleaning temp dir" && rm -f ./temp ; fi
+          cd ./temp && tar zxvf aws-nuke-v3.51.1-linux-amd64.tar.gz
+          ls -laF .
+          cd ../
+          #sudo apt-get -y install aws-nuke
       - name: Dry-Run aws-nuke
+        working-directory: ./aws-nuke
         env:
           ASSUME_ARN: ${{ secrets.BOBSON_ARN }}
         run: |
@@ -50,4 +56,4 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=$(echo $OUT | jq -r '.Credentials''.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
           #aws sts get-caller-identity
-          aws-nuke explain-account -c nuke-config.yml
+          ./temp/aws-nuke explain-account -c nuke-config.yml
