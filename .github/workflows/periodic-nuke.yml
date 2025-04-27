@@ -34,17 +34,15 @@ jobs:
           ACCOUNT_ID: ${{ secrets.BOBSON_ACCOUNT_ID }}
           BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
         run: |
-          cat ./config-template.txt | envsubst | tee nuke-config.yml
+          cat ./config-template.txt | envsubst > nuke-config.yml
       - name: Setup aws-nuke
         working-directory: ./aws-nuke
         run: |
-          ls -laF .
           chmod 0700 ./
           wget https://github.com/ekristen/aws-nuke/releases/download/v3.51.1/aws-nuke-v3.51.1-linux-amd64.tar.gz
           if [ -f ./temp ]; then echo "cleaning temp dir" && rm -f ./temp ; fi
           mkdir temp
           cd ./temp && tar zxvf ../aws-nuke-v3.51.1-linux-amd64.tar.gz
-          ls -laF .
           cd ../
           #sudo apt-get -y install aws-nuke
       - name: Dry-Run aws-nuke
