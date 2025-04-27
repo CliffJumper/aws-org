@@ -17,7 +17,6 @@ jobs:
     uses: ./.github/workflows/nuke-workflow.yml
     with:
       working-dir: "./aws-nuke"
-      region: ${{ env.AWS_REGION }}
     secrets:
       OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
       ACCOUNT_ID: ${{ secrets.BOBSON_ACCOUNT_ID }}
