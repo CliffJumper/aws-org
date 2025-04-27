@@ -32,3 +32,13 @@ jobs:
       ACCOUNT_ID: ${{ secrets.SOUTHERNBOY_ACCOUNT_ID }}
       BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
       ACCOUNT_ROLE_ARN: ${{ secrets.SOUTHERNBOY_ROLE_ARN }}
+
+  CleanNinja:
+    uses: ./.github/workflows/nuke-workflow.yml
+    with:
+      working-dir: "./aws-nuke"
+    secrets:
+      OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
+      ACCOUNT_ID: ${{ secrets.NINJA_ACCOUNT_ID }}
+      BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
+      ACCOUNT_ROLE_ARN: ${{ secrets.NINJA_ROLE_ARN }}
