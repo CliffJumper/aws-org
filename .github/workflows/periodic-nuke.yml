@@ -33,12 +33,11 @@ jobs:
           ACCOUNT_ID: ${{ secrets.BOBSON_ACCOUNT_ID }}
           BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
         run: |
-          cat config-template.txt | envsubst | tee nuke-config.yml
+          cat ./aws-nuke/config-template.txt | envsubst | tee nuke-config.yml
       - name: Setup aws-nuke
         run: |
           wget https://github.com/ekristen/aws-nuke/releases/download/v3.51.1/aws-nuke-v3.51.1-linux-amd64.tar.gz
-          tar -zxvf ./aws-nuke-v3.51.1-linux-amd64.tar.gz
-          chmod u+x aws-nuke
+          tar zxvf aws-nuke-v3.51.1-linux-amd64.tar.gz
       - name: Dry-Run aws-nuke
         env:
           ASSUME_ARN: ${{ secrets.BOBSON_ARN }}
