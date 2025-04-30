@@ -23,7 +23,7 @@ presets:
     filters:
       S3Bucket:
         - type: contains
-          value: "sandbox-account"
+          value: "terraform-state"
       S3Object:
         - type: contains
           value: "terraform.tfstate"
