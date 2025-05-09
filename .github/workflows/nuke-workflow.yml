@@ -24,10 +24,16 @@ on:
         required: true
       WEBHOOK_TOKEN:
         required: true
+    outputs:
+      nukelog:
+        description: "Log of the items nuked."
+        value: ${{ jobs.NukeAccount.outputs.nukelog }}
 
 jobs:
   NukeAccount:
     runs-on: ubuntu-latest
+    outputs:
+      nukelog: ${{ steps.run_nuke.outputs.nukelog }}
 
     steps:
       - name: Git clone the repository
@@ -57,6 +63,7 @@ jobs:
           cd ../
 
       - name: Run aws-nuke
+        id: run_nuke
         working-directory: ${{ inputs.working-dir }}
         env:
           ASSUME_ARN: ${{ secrets.ACCOUNT_ROLE_ARN }}
@@ -65,14 +72,9 @@ jobs:
           export AWS_ACCESS_KEY_ID=$(echo $OUT | jq -r '.Credentials''.AccessKeyId')
           export AWS_SECRET_ACCESS_KEY=$(echo $OUT | jq -r '.Credentials''.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
-          ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt
+          ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt 2>&1 | tee nukeout.log
+          echo "nukelog<<EOF" >> $GITHUB_OUTPUT
+          echo `cat nukeout.log` >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
           #./temp/aws-nuke explain-account -c nuke-config.yml
           #aws sts get-caller-identity
-      - name: Notify Discord
-        uses: appleboy/discord-action@master
-        with:
-          webhook_id: ${{ secrets.WEBHOOK_ID }}
-          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-          color: "#eb4034"
-          username: "GitHub Build Bot"
-          message: "Build run for ${{ github.repository }} on commit ${{ github.sha }}. Check the GitHub Actions log for more details."
