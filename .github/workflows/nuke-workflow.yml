@@ -74,8 +74,8 @@ jobs:
           echo "test - removed" >> nukeout.log
           echo "test - filtered" >> nukeout.log
           cat nukeout.log
-          grep "- removed" nukeout.log
-          grep "- filtered" nukeout.log
+          grep "\- removed" nukeout.log
+          grep "\- filtered" nukeout.log
           echo "nukelog<<EOF" >> $GITHUB_OUTPUT
           echo `cat nukeout.log` >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
