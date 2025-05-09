@@ -69,6 +69,7 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=$(echo $OUT | jq -r '.Credentials''.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
           ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt | tee nukeout.log
+          ls -laF .
           cat nukeout.log
           grep "- removed" nukeout.log
           grep "- filtered" nukeout.log
