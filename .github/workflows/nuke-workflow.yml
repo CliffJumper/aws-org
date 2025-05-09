@@ -68,7 +68,7 @@ jobs:
           export AWS_ACCESS_KEY_ID=$(echo $OUT | jq -r '.Credentials''.AccessKeyId')
           export AWS_SECRET_ACCESS_KEY=$(echo $OUT | jq -r '.Credentials''.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
-          ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt
+          ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt > nukeout.log
           #./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt > nukeout.log
           ls -laF .
           echo "test - removed" >> nukeout.log
