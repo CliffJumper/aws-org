@@ -42,8 +42,8 @@ jobs:
     steps:
       - uses: appleboy/discord-action@master
         with:
-          webhook_id: ${{ secrets.WEBHOOK_ID }}
-          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
           color: "#eb4034"
           username: "GitHub Build Bot"
           message: "Build log for ${{ github.repository }} on commit ${{ github.sha }}... ${{ needs.CleanSouthern.outputs.nukelog }}"
