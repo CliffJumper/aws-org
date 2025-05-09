@@ -20,6 +20,10 @@ on:
         required: true
       ACCOUNT_ROLE_ARN:
         required: true
+      WEBHOOOK_ID:
+        required: true
+      WEBHOOK_TOKEN:
+        required: true
 
 jobs:
   NukeAccount:
@@ -64,3 +68,11 @@ jobs:
           ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt
           #./temp/aws-nuke explain-account -c nuke-config.yml
           #aws sts get-caller-identity
+      - name: Notify Discord
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.WEBHOOK_ID }}
+          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+          color: "#eb4034"
+          username: "GitHub Build Bot"
+          message: "Build run for ${{ github.repository }} on commit ${{ github.sha }}. Check the GitHub Actions log for more details."
