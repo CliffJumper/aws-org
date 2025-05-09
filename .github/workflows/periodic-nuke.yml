@@ -13,15 +13,15 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
 jobs:
-  CleanBobson:
-    uses: ./.github/workflows/nuke-workflow.yml
-    with:
-      working-dir: "./aws-nuke"
-    secrets:
-      OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
-      ACCOUNT_ID: ${{ secrets.BOBSON_ACCOUNT_ID }}
-      BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
-      ACCOUNT_ROLE_ARN: ${{ secrets.BOBSON_ARN }}
+  #   CleanBobson:
+  #     uses: ./.github/workflows/nuke-workflow.yml
+  #     with:
+  #       working-dir: "./aws-nuke"
+  #     secrets:
+  #       OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
+  #       ACCOUNT_ID: ${{ secrets.BOBSON_ACCOUNT_ID }}
+  #       BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
+  #       ACCOUNT_ROLE_ARN: ${{ secrets.BOBSON_ARN }}
 
   CleanSouthern:
     uses: ./.github/workflows/nuke-workflow.yml
@@ -43,13 +43,12 @@ jobs:
           color: "#eb4034"
           username: "GitHub Build Bot"
           message: "Build log for ${{ github.repository }} on commit ${{ github.sha }}... ${{ needs.CleanSouthern.outputs.nukelog }}"
-
-  CleanNinja:
-    uses: ./.github/workflows/nuke-workflow.yml
-    with:
-      working-dir: "./aws-nuke"
-    secrets:
-      OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
-      ACCOUNT_ID: ${{ secrets.NINJA_ACCOUNT_ID }}
-      BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
-      ACCOUNT_ROLE_ARN: ${{ secrets.NINJA_ROLE_ARN }}
+#   CleanNinja:
+#     uses: ./.github/workflows/nuke-workflow.yml
+#     with:
+#       working-dir: "./aws-nuke"
+#     secrets:
+#       OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
+#       ACCOUNT_ID: ${{ secrets.NINJA_ACCOUNT_ID }}
+#       BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
+#       ACCOUNT_ROLE_ARN: ${{ secrets.NINJA_ROLE_ARN }}
