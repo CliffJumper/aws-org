@@ -20,7 +20,7 @@ on:
         required: true
       ACCOUNT_ROLE_ARN:
         required: true
-      WEBHOOOK_ID:
+      WEBHOOK_ID:
         required: true
       WEBHOOK_TOKEN:
         required: true
