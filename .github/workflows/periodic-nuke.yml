@@ -34,6 +34,8 @@ jobs:
       ACCOUNT_ID: ${{ secrets.SOUTHERNBOY_ACCOUNT_ID }}
       BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
       ACCOUNT_ROLE_ARN: ${{ secrets.SOUTHERNBOY_ROLE_ARN }}
+      WEBHOOK_ID: ${{ secrets.DISCORD_WEBHOOK_ID }}
+      WEBHOOK_TOKEN: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
 
   CleanNinja:
     uses: ./.github/workflows/nuke-workflow.yml
@@ -44,3 +46,5 @@ jobs:
       ACCOUNT_ID: ${{ secrets.NINJA_ACCOUNT_ID }}
       BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
       ACCOUNT_ROLE_ARN: ${{ secrets.NINJA_ROLE_ARN }}
+      WEBHOOK_ID: ${{ secrets.DISCORD_WEBHOOK_ID }}
+      WEBHOOK_TOKEN: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
