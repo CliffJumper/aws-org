@@ -73,6 +73,8 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=$(echo $OUT | jq -r '.Credentials''.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
           ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt 2>&1 | tee nukeout.log
-          echo "nukelog=`cat nukeout.log`" >> $GITHUB_OUTPUT
+          echo "nukelog<<EOF" >> $GITHUB_OUTPUT
+          echo `cat nukeout.log` >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
           #./temp/aws-nuke explain-account -c nuke-config.yml
           #aws sts get-caller-identity
