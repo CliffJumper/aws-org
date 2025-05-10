@@ -74,10 +74,8 @@ jobs:
           export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
           ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt | tee nukeout.log
           grep "removed$" nukeout.log > removed.log || true #Swallow potential error from grep
-          if [[ -s ./removed.log ]]; then  echo "report=true" >> $GITHUB_OUTPUT ; else echo "report=false" >> $GITHUB_OUTPUT ; fi
 
       - name: Report
-        if: steps.run-nuke.outputs.report
         uses: tsickert/discord-webhook@b217a69502f52803de774ded2b1ab7c282e99645 # v7.0.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
