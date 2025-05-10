@@ -34,6 +34,7 @@ resource "aws_organizations_account" "accounts" {
   name      = each.value.name
   email     = each.value.email
   parent_id = aws_organizations_organizational_unit.ous[each.value.org_name].id
+
   tags = {
     "Name"       = each.value.name
     "OwnerEmail" = each.value.email
