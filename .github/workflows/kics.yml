@@ -1,0 +1,24 @@
+name: SAST scanning via KICS
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 23 * * 5" # Runs at 11:30 PM on Friday nights
+
+jobs:
+  KICSScan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+      - name: Mkdir results-dir
+        # make sure results dir is created
+        run: mkdir -p results-dir
+      - name: run kics Scan
+        uses: Checkmarx/kics-github-action@8a44970e3d2eca668be41abe9d4e06709c3b3609 # v1.7.0
+        with:
+          path: "terraform"
+          output_path: results-dir
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@60168efe1c415ce0f5521ea06d5c2062adbeed1b # v3
+        with:
+          sarif_file: results-dir/results.sarif
