@@ -20,30 +20,24 @@ on:
         required: true
       ACCOUNT_ROLE_ARN:
         required: true
-      WEBHOOK_ID:
+      DISCORD_WEBHOOK_URL:
         required: true
-      WEBHOOK_TOKEN:
-        required: true
-    outputs:
-      nukelog:
-        description: "Log of the items nuked."
-        value: ${{ jobs.NukeAccount.outputs.nukelog }}
 
 jobs:
   NukeAccount:
     runs-on: ubuntu-latest
-    outputs:
-      nukelog: ${{ steps.run_nuke.outputs.nukelog }}
 
     steps:
       - name: Git clone the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4.1.0
+        uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722 # v4.1.0
         with:
           role-to-assume: ${{ secrets.OPS_ROLE_ARN }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ inputs.region }}
+
       - name: Generate config
         working-directory: ${{ inputs.working-dir }}
         env:
@@ -63,7 +57,7 @@ jobs:
           cd ../
 
       - name: Run aws-nuke
-        id: run_nuke
+        id: run-nuke
         working-directory: ${{ inputs.working-dir }}
         env:
           ASSUME_ARN: ${{ secrets.ACCOUNT_ROLE_ARN }}
@@ -72,9 +66,13 @@ jobs:
           export AWS_ACCESS_KEY_ID=$(echo $OUT | jq -r '.Credentials''.AccessKeyId')
           export AWS_SECRET_ACCESS_KEY=$(echo $OUT | jq -r '.Credentials''.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
-          ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt 2>&1 | tee nukeout.log
-          echo "nukelog<<EOF" >> $GITHUB_OUTPUT
-          echo `cat nukeout.log` >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          #./temp/aws-nuke explain-account -c nuke-config.yml
-          #aws sts get-caller-identity
+          ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt | tee nukeout.log
+          grep "removed$" nukeout.log > removed.log || true #Swallow potential error from grep
+
+      - name: Report
+        uses: tsickert/discord-webhook@b217a69502f52803de774ded2b1ab7c282e99645 # v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          username: NukeLogger
+          avatar-url: https://instasize.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fmunkee%2Fimage%2Fupload%2Fv1684429920%2Finstasize-website%2Flearn%2Favatar-robot-discord.webp&w=828&q=75
+          filename: ${{ inputs.working-dir }}/removed.log
