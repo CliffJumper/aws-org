@@ -22,16 +22,10 @@ on:
         required: true
       DISCORD_WEBHOOK_URL:
         required: true
-    outputs:
-      nukelog:
-        description: "Log of the items nuked."
-        value: ${{ jobs.NukeAccount.outputs.nukelog }}
 
 jobs:
   NukeAccount:
     runs-on: ubuntu-latest
-    outputs:
-      nukelog: ${{ steps.run-nuke.outputs.nukelog }}
 
     steps:
       - name: Git clone the repository
