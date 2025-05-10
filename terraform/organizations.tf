@@ -23,7 +23,8 @@ resource "aws_organizations_organizational_unit" "ous" {
   parent_id = data.aws_organizations_organization.org.roots[0].id
 
   tags = {
-    "Name" = each.value.name
+    "Name"            = each.value.name
+    "aws-nuke-exempt" = true
   }
 }
 
@@ -36,8 +37,9 @@ resource "aws_organizations_account" "accounts" {
   parent_id = aws_organizations_organizational_unit.ous[each.value.org_name].id
 
   tags = {
-    "Name"       = each.value.name
-    "OwnerEmail" = each.value.email
+    "Name"            = each.value.name
+    "OwnerEmail"      = each.value.email
+    "aws-nuke-exempt" = true
   }
 }
 
