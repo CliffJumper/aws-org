@@ -75,6 +75,7 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=$(echo $OUT | jq -r '.Credentials''.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
           ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt > nukeout.log
+          grep "removed$" nukeout.log > removed.log
 
         #  echo "nukelog<<EOF" >> $GITHUB_OUTPUT
         #  echo `cat nukeout.log` >> $GITHUB_OUTPUT
@@ -87,7 +88,7 @@ jobs:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           username: NukeLogger
           avatar-url: https://instasize.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fmunkee%2Fimage%2Fupload%2Fv1684429920%2Finstasize-website%2Flearn%2Favatar-robot-discord.webp&w=828&q=75
-          filename: ${{ inputs.working-dir }}/nukeout.log
+          filename: ${{ inputs.working-dir }}/removed.log
         # uses: appleboy/discord-action@master
         # with:
         #   webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
