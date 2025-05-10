@@ -82,27 +82,12 @@ jobs:
         #./temp/aws-nuke explain-account -c nuke-config.yml
         #aws sts get-caller-identity
       - name: Report
-        working-directory: ${{ inputs.working-dir }}
-        run: |
-          ls -laF .
-          cat nukeout.log
-        # uses: tsickert/discord-webhook@v7.0.0
-        # with:
-        #   webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        #   username: Bill
-        #   avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
-        #   embed-title: "Foo"
-        #   embed-url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        #   embed-description: "Bar [test](https://google.com)"
-        #   embed-author-name: "Bill"
-        #   embed-author-icon-url: "https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256"
-        #   embed-author-url: "https://google.com"
-        #   embed-thumbnail-url: "https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256"
-        #   embed-image-url: "https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256"
-        #   embed-footer-icon-url: "https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256"
-        #   embed-footer-text: "Foot text [test](https://google.com)"
-        #   embed-color: 15430476
-        #   embed-timestamp: "2021-09-24T02:17:53+0000"
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          username: NukeLogger
+          avatar-url: https://instasize.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fmunkee%2Fimage%2Fupload%2Fv1684429920%2Finstasize-website%2Flearn%2Favatar-robot-discord.webp&w=828&q=75
+          filename: ${{ inputs.working-dir }}/nukeout.log
         # uses: appleboy/discord-action@master
         # with:
         #   webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
