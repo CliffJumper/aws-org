@@ -32,17 +32,8 @@ jobs:
       ACCOUNT_ID: ${{ secrets.SOUTHERNBOY_ACCOUNT_ID }}
       BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
       ACCOUNT_ROLE_ARN: ${{ secrets.SOUTHERNBOY_ROLE_ARN }}
-  ReportSouthern:
-    runs-on: ubuntu-latest
-    needs: CleanSouthern
-    steps:
-      - uses: appleboy/discord-action@master
-        with:
-          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
-          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
-          color: "#eb4034"
-          username: "GitHub Build Bot"
-          message: "Build log for ${{ github.repository }} on commit ${{ github.sha }}... ${{ needs.CleanSouthern.outputs.nukelog }}"
+      DISCORD_WEBHOOK_ID: ${{ secrets.DISCORD_WEBHOOK_ID }}
+      DISCORD_WEBHOOK_TOKEN: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
 #   CleanNinja:
 #     uses: ./.github/workflows/nuke-workflow.yml
 #     with:

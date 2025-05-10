@@ -20,6 +20,10 @@ on:
         required: true
       ACCOUNT_ROLE_ARN:
         required: true
+      DISCORD_WEBHOOK_ID:
+        required: true
+      DISCORD_WEBHOOK_TOKEN:
+        required: true
     outputs:
       nukelog:
         description: "Log of the items nuked."
@@ -69,10 +73,18 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=$(echo $OUT | jq -r '.Credentials''.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $OUT | jq -r '.Credentials''.SessionToken')
           ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt > nukeout.log
-          #./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt > nukeout.log
-          ls -laF .
-          echo "nukelog<<EOF" >> $GITHUB_OUTPUT
-          echo `cat nukeout.log` >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          #./temp/aws-nuke explain-account -c nuke-config.yml
-          #aws sts get-caller-identity
+
+        #  echo "nukelog<<EOF" >> $GITHUB_OUTPUT
+        #  echo `cat nukeout.log` >> $GITHUB_OUTPUT
+        #  echo "EOF" >> $GITHUB_OUTPUT
+        #./temp/aws-nuke explain-account -c nuke-config.yml
+        #aws sts get-caller-identity
+      - name: Report
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          color: "#eb4034"
+          username: "GitHub Build Bot"
+          message: "Build log for ${{ github.repository }} on commit ${{ github.sha }}... ${{ needs.CleanSouthern.outputs.nukelog }}"
+          file: "./nukeout.log"
