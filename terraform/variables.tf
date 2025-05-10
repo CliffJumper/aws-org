@@ -1,0 +1,4 @@
+variable "organization" {
+    type = map
+    description = "The Map of the Organization.  It is a map with an account list and an ou list in it."
+}
