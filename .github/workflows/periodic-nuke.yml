@@ -13,15 +13,16 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
 jobs:
-  #   CleanBobson:
-  #     uses: ./.github/workflows/nuke-workflow.yml
-  #     with:
-  #       working-dir: "./aws-nuke"
-  #     secrets:
-  #       OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
-  #       ACCOUNT_ID: ${{ secrets.BOBSON_ACCOUNT_ID }}
-  #       BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
-  #       ACCOUNT_ROLE_ARN: ${{ secrets.BOBSON_ARN }}
+  CleanBobson:
+    uses: ./.github/workflows/nuke-workflow.yml
+    with:
+      working-dir: "./aws-nuke"
+    secrets:
+      OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
+      BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
+      ACCOUNT_ID: ${{ secrets.BOBSON_ACCOUNT_ID }}
+      ACCOUNT_ROLE_ARN: ${{ secrets.BOBSON_ARN }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
   CleanSouthern:
     uses: ./.github/workflows/nuke-workflow.yml
@@ -32,15 +33,15 @@ jobs:
       ACCOUNT_ID: ${{ secrets.SOUTHERNBOY_ACCOUNT_ID }}
       BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
       ACCOUNT_ROLE_ARN: ${{ secrets.SOUTHERNBOY_ROLE_ARN }}
-      DISCORD_WEBHOOK_ID: ${{ secrets.DISCORD_WEBHOOK_ID }}
-      DISCORD_WEBHOOK_TOKEN: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-#   CleanNinja:
-#     uses: ./.github/workflows/nuke-workflow.yml
-#     with:
-#       working-dir: "./aws-nuke"
-#     secrets:
-#       OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
-#       ACCOUNT_ID: ${{ secrets.NINJA_ACCOUNT_ID }}
-#       BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
-#       ACCOUNT_ROLE_ARN: ${{ secrets.NINJA_ROLE_ARN }}
+
+  CleanNinja:
+    uses: ./.github/workflows/nuke-workflow.yml
+    with:
+      working-dir: "./aws-nuke"
+    secrets:
+      OPS_ROLE_ARN: ${{ secrets.GHA_NUKE_ARN }}
+      BLOCKED_ACCOUNT_ID: ${{ secrets.BLOCKLIST_ACCOUNT }}
+      ACCOUNT_ID: ${{ secrets.NINJA_ACCOUNT_ID }}
+      ACCOUNT_ROLE_ARN: ${{ secrets.NINJA_ROLE_ARN }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

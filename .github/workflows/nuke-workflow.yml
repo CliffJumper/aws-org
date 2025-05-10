@@ -20,10 +20,6 @@ on:
         required: true
       ACCOUNT_ROLE_ARN:
         required: true
-      DISCORD_WEBHOOK_ID:
-        required: true
-      DISCORD_WEBHOOK_TOKEN:
-        required: true
       DISCORD_WEBHOOK_URL:
         required: true
     outputs:
@@ -39,13 +35,15 @@ jobs:
 
     steps:
       - name: Git clone the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4.1.0
+        uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722 # v4.1.0
         with:
           role-to-assume: ${{ secrets.OPS_ROLE_ARN }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ inputs.region }}
+
       - name: Generate config
         working-directory: ${{ inputs.working-dir }}
         env:
@@ -77,23 +75,10 @@ jobs:
           ./temp/aws-nuke run -c nuke-config.yml --no-dry-run --no-prompt > nukeout.log
           grep "removed$" nukeout.log > removed.log
 
-        #  echo "nukelog<<EOF" >> $GITHUB_OUTPUT
-        #  echo `cat nukeout.log` >> $GITHUB_OUTPUT
-        #  echo "EOF" >> $GITHUB_OUTPUT
-        #./temp/aws-nuke explain-account -c nuke-config.yml
-        #aws sts get-caller-identity
       - name: Report
-        uses: tsickert/discord-webhook@v7.0.0
+        uses: tsickert/discord-webhook@b217a69502f52803de774ded2b1ab7c282e99645 # v7.0.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           username: NukeLogger
           avatar-url: https://instasize.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fmunkee%2Fimage%2Fupload%2Fv1684429920%2Finstasize-website%2Flearn%2Favatar-robot-discord.webp&w=828&q=75
           filename: ${{ inputs.working-dir }}/removed.log
-        # uses: appleboy/discord-action@master
-        # with:
-        #   webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
-        #   webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
-        #   color: "#eb4034"
-        #   username: "GitHub Build Bot"
-        #   message: "Build log for ${{ github.repository }} on commit ${{ github.sha }}... ${{ needs.CleanSouthern.outputs.nukelog }}"
-        #   file: "./nukeout.log"
