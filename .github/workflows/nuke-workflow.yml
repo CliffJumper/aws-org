@@ -24,6 +24,8 @@ on:
         required: true
       DISCORD_WEBHOOK_TOKEN:
         required: true
+      DISCORD_WEBHOOK_URL:
+        required: true
     outputs:
       nukelog:
         description: "Log of the items nuked."
@@ -82,7 +84,7 @@ jobs:
       - name: Report
         uses: tsickert/discord-webhook@v7.0.0
         with:
-          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           username: Bill
           avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
           embed-title: "Foo"

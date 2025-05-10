@@ -34,6 +34,7 @@ jobs:
       ACCOUNT_ROLE_ARN: ${{ secrets.SOUTHERNBOY_ROLE_ARN }}
       DISCORD_WEBHOOK_ID: ${{ secrets.DISCORD_WEBHOOK_ID }}
       DISCORD_WEBHOOK_TOKEN: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 #   CleanNinja:
 #     uses: ./.github/workflows/nuke-workflow.yml
 #     with:
