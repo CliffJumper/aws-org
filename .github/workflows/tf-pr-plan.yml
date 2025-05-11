@@ -2,7 +2,6 @@ name: Run Terraform plan and post the results to the PR.
 
 on:
   pull_request:
-    types: [opened, reopened]
 
 env:
   AWS_REGION: "us-east-1"
