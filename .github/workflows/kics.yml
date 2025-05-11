@@ -24,7 +24,7 @@ jobs:
         with:
           path: "terraform"
           output_path: results-dir
-          output_formats: "sarif,text"
+          output_formats: "json,sarif,text"
           ignore_on_exit: results
           platform-type: terraform
       - name: Upload SARIF file
