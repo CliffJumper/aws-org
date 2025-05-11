@@ -1,10 +1,8 @@
-name: Run Terraform against the Org.
+name: Run Terraform plan and post the results to the PR.
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [opened, reopened]
 
 env:
   AWS_REGION: "us-east-1"
@@ -40,4 +38,10 @@ jobs:
         working-directory: ./terraform
         run: |
           terraform  init --backend-config="bucket=${{ secrets.ORG_STATE_BUCKET }}" --backend-config="key=${{ secrets.ORG_STATE_FILE }}" --backend-config="region=${{ env.AWS_REGION }}"
-          TF_VAR_organization=`aws ssm get-parameter --name "/ORG/organization" --with-decryption | jq -r '.Parameter.Value' | base64 -d` terraform plan
+          TF_VAR_organization=`aws ssm get-parameter --name "/ORG/organization" --with-decryption | jq -r '.Parameter.Value' | base64 -d` terraform plan | tee planout.txt
+
+      - name: Comment on PR
+        uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
+        with:
+          message: "If you merge this PR, the Terraform Plan will be applied"
+          file-path: ./terraform/planout.txt
