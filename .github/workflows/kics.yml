@@ -24,7 +24,7 @@ jobs:
         with:
           path: "terraform"
           output_path: results-dir
-          output_formats: "json,sarif,pdf"
+          output_formats: "json,sarif,html"
           ignore_on_exit: results
           platform-type: terraform
       - name: Upload SARIF file
@@ -35,4 +35,4 @@ jobs:
         if: ${{ github.event.pull_request }}
         uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
         with:
-          file-path: ./results-dir/results.pdf
+          file-path: ./results-dir/results.html
