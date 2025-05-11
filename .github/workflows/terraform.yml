@@ -36,6 +36,11 @@ jobs:
           git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
           export PATH="$HOME/.tfenv/bin:$PATH"
           echo 'export PATH="$HOME/.tfenv/bin:$PATH"' >> ~/.bash_profile
+          echo "PWD IS $PWD"
+          echo "HOME is $HOME"
+          ls  -laF .
+          ls -laF $HOME
+          which tfenv
 
       - name: Get Parameters
         uses: Bardavon-Health/actions-aws-ssm-params-to-env@v1.4.0
