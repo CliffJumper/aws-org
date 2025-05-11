@@ -24,12 +24,9 @@ jobs:
         with:
           path: "terraform"
           output_path: results-dir
-          output_formats: "json,sarif,text"
+          output_formats: "sarif,text"
           ignore_on_exit: results
           platform-type: terraform
-      - name: Show results
-        run: |
-          cat results-dir/results.json
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@60168efe1c415ce0f5521ea06d5c2062adbeed1b # v3
         with:
