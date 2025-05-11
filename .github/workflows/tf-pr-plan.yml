@@ -1,6 +1,7 @@
 name: Run Terraform plan and post the results to the PR.
 
 on:
+  workflow_dispatch:
   pull_request:
 
 env:
@@ -41,6 +42,7 @@ jobs:
           TF_VAR_organization=`aws ssm get-parameter --name "/ORG/organization" --with-decryption | jq -r '.Parameter.Value' | base64 -d` terraform plan -no-color | tee planout.txt
 
       - name: Comment on PR
+        if: ${{ github.events.pull_request }}
         uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
         with:
           file-path: ./terraform/planout.txt
