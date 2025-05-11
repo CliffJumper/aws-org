@@ -4,9 +4,6 @@ on:
   pull_request:
     types: [opened, reopened]
 
-permissions: 
-   pull-requests: write 
-
 env:
   AWS_REGION: "us-east-1"
 
@@ -16,6 +13,8 @@ permissions:
   contents: read # This is required for actions/checkout
 jobs:
   RunTerraform:
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     defaults:
       run:
