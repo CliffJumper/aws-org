@@ -1,7 +1,7 @@
-name: Run Terraform plan and post the results to the PR.
+name: Run Terraform Apply
 
 on:
-  pull_request:
+  workflow_dispatch:
 
 env:
   AWS_REGION: "us-east-1"
@@ -10,7 +10,6 @@ env:
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
-  pull-requests: write
 jobs:
   RunTerraform:
     runs-on: ubuntu-latest
@@ -38,9 +37,4 @@ jobs:
         working-directory: ./terraform
         run: |
           terraform  init --backend-config="bucket=${{ secrets.ORG_STATE_BUCKET }}" --backend-config="key=${{ secrets.ORG_STATE_FILE }}" --backend-config="region=${{ env.AWS_REGION }}"
-          TF_VAR_organization=`aws ssm get-parameter --name "/ORG/organization" --with-decryption | jq -r '.Parameter.Value' | base64 -d` terraform plan -no-color | tee planout.txt
-
-      - name: Comment on PR
-        uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
-        with:
-          file-path: ./terraform/planout.txt
+          TF_VAR_organization=`aws ssm get-parameter --name "/ORG/organization" --with-decryption | jq -r '.Parameter.Value' | base64 -d` terraform plan | tee planout.txt
