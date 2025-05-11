@@ -36,7 +36,7 @@ jobs:
         with:
           terraform_version: "1.11.4"
 
-      - name: Run Terraform Plan
+      - name: Run Terraform Apply
         working-directory: ./terraform
         run: |
           terraform  init --backend-config="bucket=${{ secrets.ORG_STATE_BUCKET }}" --backend-config="key=${{ secrets.ORG_STATE_FILE }}" --backend-config="region=${{ env.AWS_REGION }}"

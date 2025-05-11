@@ -2,8 +2,14 @@ name: SAST scanning via KICS
 
 on:
   workflow_dispatch:
+  pull_request:
   schedule:
     - cron: "30 23 * * 5" # Runs at 11:30 PM on Friday nights
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+  pull-requests: write
 
 jobs:
   KICSScan:
@@ -18,7 +24,7 @@ jobs:
         with:
           path: "terraform"
           output_path: results-dir
-          output_formats: "json,sarif"
+          output_formats: "json,sarif,text"
           ignore_on_exit: results
           platform-type: terraform
       - name: Show results
@@ -28,3 +34,8 @@ jobs:
         uses: github/codeql-action/upload-sarif@60168efe1c415ce0f5521ea06d5c2062adbeed1b # v3
         with:
           sarif_file: results-dir/results.sarif
+      - name: Comment on PR
+        if: ${{ github.event.pull_request }}
+        uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
+        with:
+          file-path: ./results-dir/results.txt
