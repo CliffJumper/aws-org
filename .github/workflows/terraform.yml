@@ -1,4 +1,4 @@
-name: Periodically run aws-nuke on select AWS accounts in the ORG.
+name: Run Terraform against the Org.
 
 on:
   workflow_dispatch:
