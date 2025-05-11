@@ -34,7 +34,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
         with:
-          terraform-version: "1.11.4"
+          terraform_version: "1.11.4"
 
       - name: Get Parameters
         uses: Bardavon-Health/actions-aws-ssm-params-to-env@e7bc4b441c00d90c4d03bc7554d75c8135afa8f1 # v1.4.0
@@ -48,4 +48,4 @@ jobs:
       - name: Run Terraform Plan
         working-directory: ./terraform
         run: |
-          terraform  init ---backend-config="bucket=${{ secrets.ORG_STATE_BUCKET }}" --backend-config="key=${{ secrets.ORG_STATE_FILE }}" --backend-config="region=${{ env.AWS_REGION }}"
+          terraform  init --backend-config="bucket=${{ secrets.ORG_STATE_BUCKET }}" --backend-config="key=${{ secrets.ORG_STATE_FILE }}" --backend-config="region=${{ env.AWS_REGION }}"
