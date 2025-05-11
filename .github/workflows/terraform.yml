@@ -42,7 +42,7 @@ jobs:
           ssm-path: /ORG
           get-children: true
           decryption: true
-          mask-values: true
+          mask-values: false
           prefix: TF_VAR_
 
       - name: Run Terraform Plan
