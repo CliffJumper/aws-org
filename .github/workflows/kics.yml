@@ -33,6 +33,12 @@ jobs:
           sarif_file: ./results-dir/results.sarif
       - name: Comment on PR
         if: ${{ github.event.pull_request }}
+        run: |
+          sudo apt install pandoc
+          pandoc -f html -t gfm ./results-dir/results.html -o ./results-dir/results.md
+
+      - name: Comment on PR
+        if: ${{ github.event.pull_request }}
         uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
         with:
-          file-path: ./results-dir/results.html
+          file-path: ./results-dir/results.md
