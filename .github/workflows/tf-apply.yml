@@ -40,4 +40,4 @@ jobs:
         working-directory: ./terraform
         run: |
           terraform  init --backend-config="bucket=${{ secrets.ORG_STATE_BUCKET }}" --backend-config="key=${{ secrets.ORG_STATE_FILE }}" --backend-config="region=${{ env.AWS_REGION }}"
-          TF_VAR_organization=`aws ssm get-parameter --name "/ORG/organization" --with-decryption | jq -r '.Parameter.Value' | base64 -d` terraform apply -auto-approve
+          TF_VAR_organization=`aws ssm get-parameter --name "/ORG/organization" --with-decryption | jq -r '.Parameter.Value' | base64 -d` terraform apply -auto-approve 2>&1 | openssl enc --aes-256-cbc -pbkdf2  -k ${{ secrets.TF_LOG_PASS }} | base64
