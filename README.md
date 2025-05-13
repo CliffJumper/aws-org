@@ -12,11 +12,11 @@ For this to work, the GitHub aciton uses OIDC to get access to an ops role.  The
 
 ---
 ## Security Scanning
-I've setup a GitHub Action to run [Checkmarx's KICS](https://checkmarx.com/product/opensource/kics-open-source-infrastructure-as-code-project/) tool against the Terraform code.  This is run on a Cron schedule, and on PR creation and updates.  The PR runs only update the PR conversation with the results in Markdown.  The Scheduled runs upload the SARIF file so that findings will be in the `Security` tab of the repo.## Requirements
+I've set up a GitHub Action to run [Checkmarx's KICS](https://checkmarx.com/product/opensource/kics-open-source-infrastructure-as-code-project/) tool against the Terraform code.  This is run on a Cron schedule, and on PR creation and updates.  The PR runs only update the PR conversation with the results in Markdown.  The Scheduled runs upload the SARIF file so that findings will be in the `Security` tab of the repo.## Requirements
 
 ---
 ## Terraform
-The Terraform for the org and accounts setups up OUs and accounts within them.  The Layout of the OUs and accounts is generally flat, with each OS sitting as peers to each other, and accounts falling into one of the OUs.  This allows me to have a Terraform Map that specifies the OUs, and the accounts they contain.  The Terraform code usees `for` and `for_each` clauses to build the OUs and Accounts. 
+The Terraform for the org and accounts sets up OUs and accounts within them. Like the nuke action, OIDC is used to access the Org master account to do the required work. The Layout of the OUs and accounts is generally flat, with each OS sitting as peers to each other, and accounts falling into one of the OUs.  This allows me to have a Terraform Map specifying the OUs and their accounts. The Terraform code uses `for` and `for_each` clauses to build the OUs and Accounts. 
 
 The general layout of the `organizations` variable is:
 ```
