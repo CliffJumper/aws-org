@@ -21,17 +21,6 @@ resource "aws_organizations_organization" "org" {
   }
 }
 
-# If you want to designate delegated administrators, use this separate resource
-# This is different from enabling service access
-# Example:
-# resource "aws_organizations_delegated_administrator" "guardduty" {
-#   account_id        = "123456789012" # Member account ID, not management account
-#   service_principal = "guardduty.amazonaws.com"
-#   
-#   # This requires that the service access is already enabled
-#   depends_on = [aws_organizations_organization_service_access_principals.service_access]
-# }
-
 data "aws_organizations_organization" "org" {}
 
 resource "aws_organizations_organizational_unit" "ous" {
