@@ -1,6 +1,9 @@
 # AWS Organizations Configuration
 # Manages the AWS Organization structure including OUs and member accounts
 
+# Disable KICS rule on IAM Access Analyzer because we don't use it.
+# kics-scan disable=e592a0c5-5bdb-414c-9066-5dba7cdea370
+
 resource "aws_organizations_organization" "org" {
   feature_set = "ALL"
 
@@ -8,7 +11,7 @@ resource "aws_organizations_organization" "org" {
     "member.org.stacksets.cloudformation.amazonaws.com",
     "sso.amazonaws.com"
   ]
-  
+
   enabled_policy_types = [
     "SERVICE_CONTROL_POLICY",
     "RESOURCE_CONTROL_POLICY",
@@ -32,7 +35,7 @@ resource "aws_organizations_organizational_unit" "ous" {
   tags = merge(
     var.tags,
     {
-      Name = each.value.name
+      Name            = each.value.name
       aws-nuke-exempt = true
     }
   )
@@ -43,19 +46,19 @@ resource "aws_organizations_organizational_unit" "ous" {
 }
 
 resource "aws_organizations_account" "accounts" {
-  for_each = { for i, j in local.accounts : j.name => j }
+  for_each  = { for i, j in local.accounts : j.name => j }
   name      = each.value.name
   email     = each.value.email
   parent_id = aws_organizations_organizational_unit.ous[each.value.org_name].id
 
   iam_user_access_to_billing = "ALLOW"
-  close_on_deletion         = false # Prevent accidental account deletion
+  close_on_deletion          = false # Prevent accidental account deletion
 
   tags = merge(
     var.tags,
     {
-      Name       = each.value.name
-      OwnerEmail = each.value.email
+      Name            = each.value.name
+      OwnerEmail      = each.value.email
       aws-nuke-exempt = true
     }
   )
