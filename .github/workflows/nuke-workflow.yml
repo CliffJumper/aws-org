@@ -50,10 +50,10 @@ jobs:
         working-directory: ${{ inputs.working-dir }}
         run: |
           chmod 0700 ./
-          wget https://github.com/ekristen/aws-nuke/releases/download/v3.51.1/aws-nuke-v3.51.1-linux-amd64.tar.gz
+          wget https://github.com/ekristen/aws-nuke/releases/download/v3.56.2/aws-nuke-v3.56.2-linux-amd64.tar.gz
           if [ -f ./temp ]; then echo "cleaning temp dir" && rm -f ./temp ; fi
           mkdir temp
-          cd ./temp && tar zxvf ../aws-nuke-v3.51.1-linux-amd64.tar.gz
+          cd ./temp && tar zxvf ../aws-nuke-v3.56.2-linux-amd64.tar.gz
           cd ../
 
       - name: Run aws-nuke
