@@ -9,6 +9,7 @@ resource "aws_organizations_organization" "org" {
 
   aws_service_access_principals = [
     "member.org.stacksets.cloudformation.amazonaws.com",
+    "securityhub.amazonaws.com",
     "sso.amazonaws.com"
   ]
 
