@@ -29,7 +29,7 @@ jobs:
           ignore_on_exit: results
           platform_type: terraform
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@60168efe1c415ce0f5521ea06d5c2062adbeed1b # v3
+        uses: github/codeql-action/upload-sarif@7434149006143a4d75b82a2f411ef15b03ccc2d7 # v4.32.6
         with:
           sarif_file: ./results-dir/results.sarif
       - name: Comment on PR
