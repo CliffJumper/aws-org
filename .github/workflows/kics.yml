@@ -21,7 +21,7 @@ jobs:
         # make sure results dir is created
         run: mkdir -p results-dir
       - name: run kics Scan
-        uses: Checkmarx/kics-github-action@5373b38b35d09a400790b9e560189064d185391f # v2.1.7
+        uses: Checkmarx/kics-github-action@05aa5eb70eede1355220f4ca5238d96b397e30a6 # v2.1.20
         with:
           path: "terraform"
           output_path: results-dir
